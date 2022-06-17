@@ -20,7 +20,7 @@ class CreateAccountsTable extends Migration
             $table->boolean('checked');
             $table->longText('description');
             $table->string('interest')->nullable();
-            $table->string('date_of_birth')->date_of_birth();
+            $table->string('date_of_birth')->nullable();
             $table->string('email');
             $table->string('account');
             $table->json('credit_card');
