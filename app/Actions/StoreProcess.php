@@ -6,6 +6,7 @@ use App\Models\Account;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class StoreProcess
 {
@@ -19,32 +20,18 @@ class StoreProcess
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception|Throwable
      */
     public function run()
     {
         //get json file..
-        $results = $collection = collect($this->formatKeys())->toArray();
+        $results = collect($this->formatKeys())->toArray();
         DB::beginTransaction();
         foreach ($results as $result){
             Account::create($result);
         }
         DB::commit();
-//        $collections =  $this->proceedNewData();
-//        dd($collections);
-//
-//        $lastAccount = Account::orderBy('created_at','desc')->first() ?? null;
-//        if($lastAccount){
-//            $i = 0;
-//            do {
-//                echo $i;
-//            } while ($i > 0);
-//
-//        }else{
-//            foreach ($collections as $collection){
-////                Account::create($collection);
-//            }
-//        }
+        return 'Done';
     }
 
     /**

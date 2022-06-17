@@ -19,7 +19,7 @@ class CreateAccountsTable extends Migration
             $table->longText('address');
             $table->boolean('checked');
             $table->longText('description');
-            $table->string('interest')->default(null);
+            $table->string('interest')->nullable();
             $table->string('date_of_birth');
             $table->string('email');
             $table->string('account');
