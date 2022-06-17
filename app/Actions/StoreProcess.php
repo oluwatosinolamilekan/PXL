@@ -5,10 +5,11 @@ namespace App\Actions;
 use App\Models\Account;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class StoreProcess
 {
-    const Age = [18, 65];
+    const AGE = [18, 65];
 
     protected $filename;
 
@@ -23,20 +24,27 @@ class StoreProcess
     public function run()
     {
         //get json file..
-        $collections =  $this->formatKeys();
-
-        $lastAccount = Account::orderBy('created_at','desc')->first() ?? [];
-        if($lastAccount){
-            $i = 0;
-            do {
-                echo $i;
-            } while ($i > 0);
-
-        }else{
-            foreach ($collections as $collection){
-                Account::create($collection);
-            }
+        $results = $collection = collect($this->formatKeys())->toArray();
+        DB::beginTransaction();
+        foreach ($results as $result){
+            Account::create($result);
         }
+        DB::commit();
+//        $collections =  $this->proceedNewData();
+//        dd($collections);
+//
+//        $lastAccount = Account::orderBy('created_at','desc')->first() ?? null;
+//        if($lastAccount){
+//            $i = 0;
+//            do {
+//                echo $i;
+//            } while ($i > 0);
+//
+//        }else{
+//            foreach ($collections as $collection){
+////                Account::create($collection);
+//            }
+//        }
     }
 
     /**
@@ -57,11 +65,19 @@ class StoreProcess
     {
         $results = [];
         foreach ($this->loadUniqueDataFromFile() as $value){
-           if(array_key_exists('date_of_birth', $value)) $value['date_of_birth'] = $this->convertDateOfBirth($value['date_of_birth']);
+            if (!empty($value['date_of_birth'])) {
+                $value['age'] = $this->convertDateOfBirth($value['date_of_birth']);
+            }
+            else{
+                $value['age'] = 'unknown';
+            }
             $results[] = $value;
         }
-        //load age is between 18 and 65
-        return collect($results)->whereBetween('date_of_birth', self::Age)->all();
+        //load age is between 18 and 65 or unknown
+       return collect($results)->filter(function ($value, $key){
+            return collect($value)->whereBetween('age', self::AGE)
+                || collect($value)->whereNull('date_of_birth');
+        })->all();
     }
 
     /**
@@ -74,12 +90,24 @@ class StoreProcess
     }
 
     /**
-     * @param $currentData
-     * @param $incomingData
      * @return array
+     * @throws Exception
      */
-    private function getDataDiff($currentData, $incomingData): array
+    private function getAlreadyStoreData(): array
     {
-        return array_diff($currentData, $incomingData);
+        $collection = collect($this->formatKeys())->toArray();
+        $storeData = Account::pluck('account')->toArray();
+        return array_diff_assoc($collection, $storeData);
+    }
+
+    private function proceedNewData()
+    {
+        $collection = $this->formatKeys();
+
+        $results = collect($collection)->toArray();
+        $currentData = $this->getAlreadyStoreData();
+       foreach($currentData as $data){
+
+       }
     }
 }
