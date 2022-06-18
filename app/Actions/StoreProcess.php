@@ -24,8 +24,9 @@ class StoreProcess
      */
     public function run()
     {
-        //get json file..
         $results = $this->proceedNewData();
+        $start = microtime(true);
+
         DB::beginTransaction();
         if (!empty($results)) {
             foreach ($results as $result){
@@ -33,7 +34,8 @@ class StoreProcess
             }
         }
         DB::commit();
-        return 'Done';
+
+        return microtime(true) - $start;
     }
 
     /**
@@ -42,7 +44,7 @@ class StoreProcess
     private function loadUniqueDataFromFile(): array
     {
         $file = public_path() . "/{$this->filename}";
-        if(!$file) throw new Exception("{$this->filename} does not exist on the public folder");
+        if(!public_path() . "/{$this->filename}") throw new Exception("{$this->filename} does not exist on the public folder");
         $collection = json_decode(file_get_contents($file), TRUE);
         return collect($collection)->unique('account')->values()->all(); // return unique result..
     }
@@ -63,7 +65,7 @@ class StoreProcess
             $results[] = $value;
         }
         //load age is between 18 and 65 or unknown
-       return collect($results)->filter(function ($value, $key){
+       return collect($results)->filter(function ($value){
             return collect($value)->whereBetween('age', self::AGE)
                 || collect($value)->whereNull('date_of_birth');
         })->all();
