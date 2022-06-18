@@ -39,4 +39,49 @@ As an added challenge, we offer the following information:
 Below are the steps you need to successfully setup and run the application.
 - Clone the app from the repository and cd into the root directory of the app
 
+Make sure docker is installed on your machine.
+Once installed, next step is to add an `.env` file. `.env.example` already have all values, to be used with docker:
+```
+ cp .env.example .env
+```
 
+Now, the most important, build and start the docker containers.
+` docker-compose up -d --build --remove-orphans`
+
+Docker will start doing its magic. All required service like mysql, will be installed.
+MySQL will have empty database, unless you created it in the past (data are preserved between containers rebuild).
+
+While docker is doing its magic, you need to add to `hosts` file:
+```
+127.0.0.1:8090
+```
+
+
+After this, api is available on [http://127.0.0.1:8090/](http://127.0.0.1:8090/). It takes some time to install all dependiences for node, so be patient.
+
+Make sure everything is running: `$ docker ps`. After, enter the terminal of your pxl image:
+```
+ docker-compose exec pxl_app bash
+```
+
+Once inside, run migrations `$ php artisan migrate` and creat process that will neatly transfer the contents of the JSON file to a database by executing the following command `$ php artisan start:process` and follow its
+steps.
+
+Please, remember that once you have build your images you simply need to do:
+```
+ docker-compose stop # to stop the images
+ docker-compose start # to start the services again
+```
+
+To remove everything (except mongo and mysql data):
+```
+ docker-compose down --remove-orphans --rmi all
+```
+
+## Other commands.
+
+Removes all existing data on all databases
+
+```
+$ php artisan migrate:fresh 
+```
