@@ -25,7 +25,7 @@ class StoreProcess
     public function run()
     {
         //get json file..
-        $results = $this->checkDataDifference();
+        $results = $this->proceedNewData();
         DB::beginTransaction();
         if (!empty($results)) {
             foreach ($results as $result){
