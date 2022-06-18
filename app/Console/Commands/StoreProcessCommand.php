@@ -35,9 +35,16 @@ class StoreProcessCommand extends Command
      * Execute the console command.
      *
      * @return int
+     * @throws \Throwable
      */
     public function handle()
     {
+         $this->output->progressStart(5);
+         for ($i = 0; $i < 5; $i++) {
+             sleep(1);
+             $this->output->progressAdvance();
+         }
+         $this->output->progressFinish();
         $process = (new StoreProcess('challenge.json'))->run();
         return 0;
     }

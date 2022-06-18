@@ -86,14 +86,12 @@ class StoreProcess
     {
         $results = collect($this->formatKeys())->toArray();
         $currentData = Account::pluck('account')->toArray();
-        return $this->checkDataDifference();
+        return $this->checkDataDifference($results, $currentData);
     }
 
-    private function checkDataDifference(): array
+    private function checkDataDifference($jsonData, $currentData): array
     {
         $result = [];
-        $jsonData = collect($this->formatKeys())->toArray();
-        $currentData = Account::pluck('account')->toArray();
         foreach ($jsonData as $key => $data){
             if(isset($currentData[$key])){
                 if(is_array($data) && is_array($currentData[$key])){
@@ -103,22 +101,6 @@ class StoreProcess
                 $result[$key] = $data;
             }
         }
-        return $result;
-    }
-
-    private function check_diff_multi($array1, $array2): array
-    {
-        $result = [];
-        foreach($array1 as $key => $val) {
-            if(isset($array2[$key])){
-                if(is_array($val)  && is_array($array2[$key])){
-                    $result[$key] = $this->check_diff_multi($val, $array2[$key]);
-                }
-            } else {
-                $result[$key] = $val;
-            }
-        }
-
         return $result;
     }
 }
