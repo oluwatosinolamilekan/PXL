@@ -1,96 +1,65 @@
 version: '3'
 services:
-    # Add this top-level entry
-    redis:
-        image: redis:latest
-        container_name: redis
-        restart: unless-stopped
-        tty: true
-        ports:
-        - 6379:6379
-        volumes:
-        - ./redis/redis.conf:/usr/local/etc/redis/redis.conf
-        - redisdata:/data
-        networks:
-        - app-network
 
     #PHP Service
-    dovilearn_app:
+    pxl_app:
         build:
             context: .
             dockerfile: Dockerfile
         image: digitalocean.com/php
-        container_name: dovilearn_app
+        container_name: pxl_app
         restart: unless-stopped
         tty: true
         environment:
-            SERVICE_NAME: dovilearn_app
+            SERVICE_NAME: pxl_app
             SERVICE_TAGS: dev
             WAIT_HOSTS: redis
             WAIT_HOSTS_TIMEOUT: 300
             WAIT_SLEEP_INTERVAL: 30
             WAIT_HOST_CONNECT_TIMEOUT: 30
-            DB_HOST : dovilearn_db
+            DB_HOST : pxl_db
         working_dir: /var/www
         depends_on:
-        - redis
-        - dovilearn_db
+            - pxl_db
         volumes:
-        - ./:/var/www
-        - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+            - ./:/var/www
+            - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
         networks:
-        - app-network
-
-    dovilearn_scheduler:
-        image: digitalocean.com/php
-        container_name: dovilearn_scheduler
-        depends_on:
-        - dovilearn_app
-        - dovilearn_db
-        volumes:
-        - ./:/var/www
-        environment:
-            APP_ENV: local
-            CONTAINER_ROLE: scheduler
-            CACHE_DRIVER: redis
-            SESSION_DRIVER: database
-            QUEUE_DRIVER: redis
-            REDIS_HOST: redis
-            DB_HOST : dovilearn_db
+            - app-network
 
     #Nginx Service
-    dovilearn_server:
+    pxl_server:
         image: nginx:alpine
-        container_name: dovilearn_server
+        container_name: pxl_server
         restart: unless-stopped
         tty: true
         ports:
-        - "8090:80"
+            - "8090:80"
         volumes:
-        - ./:/var/www
-        - ./nginx/conf.d/:/etc/nginx/conf.d/
+            - ./:/var/www
+            - ./nginx/conf.d/:/etc/nginx/conf.d/
         networks:
-        - app-network
+            - app-network
 
     #MySQL Service
-    dovilearn_db:
+    pxl_db:
         image: 'mysql:8.0'
-        container_name: dovilearn_db
+        container_name: pxl_db
         restart: unless-stopped
         tty: true
         ports:
-        - "5306:3306"
+            - "5306:3306"
         environment:
-            MYSQL_DATABASE: dovilearn_db
-            DB_USERNAME: rheedwahn
-            DB_PASSWORD: DoviLearn1.
-            MYSQL_ROOT_PASSWORD: DoviLearn1.
+            MYSQL_DATABASE: pxl_db
+            DB_USERNAME: pxl
+            DB_PASSWORD: pxl.
+            MYSQL_ROOT_PASSWORD: pxl.
             MYSQL_ROOT_HOST: '%'
         volumes:
-        - ./mysql/my.cnf:/etc/mysql/my.cnf
+            - ./mysql/my.cnf:/etc/mysql/my.cnf
         #- dbdata:/var/lib/mysql/
         networks:
-        - app-network
+            - app-network
 
 #Docker Networks
 networks:

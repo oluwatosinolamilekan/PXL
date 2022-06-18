@@ -44,7 +44,7 @@ class StoreProcess
     private function loadUniqueDataFromFile(): array
     {
         $file = public_path() . "/{$this->filename}";
-        if(!public_path() . "/{$this->filename}") throw new Exception("{$this->filename} does not exist on the public folder");
+        if(!$file) throw new Exception("{$this->filename} does not exist on the public folder");
         $collection = json_decode(file_get_contents($file), TRUE);
         return collect($collection)->unique('account')->values()->all(); // return unique result..
     }

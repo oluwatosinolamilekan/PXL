@@ -3,7 +3,10 @@
 namespace App\Console\Commands;
 
 use App\Actions\StoreProcess;
+use App\Models\User;
+use Exception;
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Helper\ProgressBar;
 
 class StoreProcessCommand extends Command
 {
@@ -40,17 +43,10 @@ class StoreProcessCommand extends Command
     public function handle()
     {
         try {
-
-            $this->output->progressStart(2);
-            for ($i = 0; $i < 2; $i++) {
-                sleep(1);
-                $this->output->progressAdvance();
-            }
-            $this->output->progressFinish();
             $time = (new StoreProcess('challenge.json'))->run();
             $this->info('The operation was successful!');
             return 0;
-        }catch (\Exception $exception){
+        }catch (Exception $exception){
             $this->error($exception->getMessage());
             return 1;
         }
