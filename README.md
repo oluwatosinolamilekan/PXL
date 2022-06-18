@@ -56,9 +56,6 @@ While docker is doing its magic, you need to add to `hosts` file:
 127.0.0.1:8090
 ```
 
-
-After this, api is available on [http://127.0.0.1:8090/](http://127.0.0.1:8090/). It takes some time to install all dependiences for node, so be patient.
-
 Make sure everything is running: `$ docker ps`. After, enter the terminal of your pxl image:
 ```
  docker-compose exec pxl_app bash
