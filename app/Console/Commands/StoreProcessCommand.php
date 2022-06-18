@@ -3,10 +3,8 @@
 namespace App\Console\Commands;
 
 use App\Actions\StoreProcess;
-use App\Models\User;
 use Exception;
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Helper\ProgressBar;
 
 class StoreProcessCommand extends Command
 {

@@ -30,7 +30,7 @@ As an added challenge, we offer the following information:
 
 ## Technologies
 
-- PHP ^7.3|^8.0
+- PHP 7.4
 - Laravel
 - Docker
 
