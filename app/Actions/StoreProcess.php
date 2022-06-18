@@ -25,10 +25,12 @@ class StoreProcess
     public function run()
     {
         //get json file..
-        $results = collect($this->formatKeys())->toArray();
+        $results = $this->checkDataDifference();
         DB::beginTransaction();
-        foreach ($results as $result){
-            Account::create($result);
+        if (!empty($results)) {
+            foreach ($results as $result){
+                Account::create($result);
+            }
         }
         DB::commit();
         return 'Done';
@@ -76,25 +78,47 @@ class StoreProcess
         return now()->diffInYears(Carbon::createFromTimestamp(strtotime($date))->format('d-m-Y'));
     }
 
+
     /**
-     * @return array
      * @throws Exception
      */
-    private function getAlreadyStoreData(): array
+    private function proceedNewData(): array
     {
-        $collection = collect($this->formatKeys())->toArray();
-        $storeData = Account::pluck('account')->toArray();
-        return array_diff_assoc($collection, $storeData);
+        $results = collect($this->formatKeys())->toArray();
+        $currentData = Account::pluck('account')->toArray();
+        return $this->checkDataDifference();
     }
 
-    private function proceedNewData()
+    private function checkDataDifference(): array
     {
-        $collection = $this->formatKeys();
+        $result = [];
+        $jsonData = collect($this->formatKeys())->toArray();
+        $currentData = Account::pluck('account')->toArray();
+        foreach ($jsonData as $key => $data){
+            if(isset($currentData[$key])){
+                if(is_array($data) && is_array($currentData[$key])){
+                    $result[$key] = $this->checkDataDifference($data, $currentData[$key]);
+                }
+            }else{
+                $result[$key] = $data;
+            }
+        }
+        return $result;
+    }
 
-        $results = collect($collection)->toArray();
-        $currentData = $this->getAlreadyStoreData();
-       foreach($currentData as $data){
+    private function check_diff_multi($array1, $array2): array
+    {
+        $result = [];
+        foreach($array1 as $key => $val) {
+            if(isset($array2[$key])){
+                if(is_array($val)  && is_array($array2[$key])){
+                    $result[$key] = $this->check_diff_multi($val, $array2[$key]);
+                }
+            } else {
+                $result[$key] = $val;
+            }
+        }
 
-       }
+        return $result;
     }
 }

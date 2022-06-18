@@ -15,6 +15,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $data = (new StoreProcess('challenge.json'))->run();
     return view('welcome');
 });
