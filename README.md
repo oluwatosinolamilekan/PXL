@@ -56,12 +56,12 @@ While docker is doing its magic, you need to add to `hosts` file:
 127.0.0.1:8090
 ```
 
-Make sure everything is running: `$ docker ps`. After, enter the terminal of your pxl image:
+Make sure everything is running: `docker ps`. After, enter the terminal of your pxl image:
 ```
  docker-compose exec pxl_app bash
 ```
 
-Once inside, run migrations `$ php artisan migrate` and create process that will neatly transfer the contents of the JSON file to a database by executing the following command `$ php artisan start:process` and follow its
+Once inside, run migrations `php artisan migrate` and create process that will neatly transfer the contents of the JSON file to a database by executing the following command ` php artisan start:process` and follow its
 steps.
 
 Please, remember that once you have build your images you simply need to do:
@@ -70,7 +70,7 @@ Please, remember that once you have build your images you simply need to do:
  docker-compose start # to start the services again
 ```
 
-To remove everything (except mongo and mysql data):
+To remove everything:
 ```
  docker-compose down --remove-orphans --rmi all
 ```
@@ -80,5 +80,5 @@ To remove everything (except mongo and mysql data):
 Removes all existing data on all databases
 
 ```
-$ php artisan migrate:fresh 
+php artisan migrate:fresh 
 ```
