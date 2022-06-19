@@ -40,8 +40,14 @@ class StoreProcessCommand extends Command
      */
     public function handle()
     {
+        /**
+         * if the content in the file become larger like
+         * 500 times larger this command should be run based
+         * with every minute or hours or days wished for till
+         * document is completed save on the database.
+         */
         try {
-            $time = (new StoreProcess('challenge.json'))->run();
+            (new StoreProcess('challenge.json'))->run();
             $this->info('The operation was successful!');
             return 0;
         }catch (Exception $exception){

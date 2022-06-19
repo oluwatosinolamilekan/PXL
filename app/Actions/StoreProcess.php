@@ -12,8 +12,14 @@ class StoreProcess
 {
     const AGE = [18, 65];
 
-    protected $filename;
+    /**
+     * @var string
+     */
+    protected string $filename;
 
+    /**
+     * @param $filename
+     */
     public function __construct($filename)
     {
         $this->filename = $filename;
@@ -34,7 +40,6 @@ class StoreProcess
             }
         }
         DB::commit();
-
         return microtime(true) - $start;
     }
 
@@ -45,8 +50,8 @@ class StoreProcess
     {
         $file = public_path() . "/{$this->filename}";
         if(!$file) throw new Exception("{$this->filename} does not exist on the public folder");
-        $collection = json_decode(file_get_contents($file), TRUE);
-        return collect($collection)->unique('account')->values()->all(); // return unique result..
+        $collection = json_decode(file_get_contents($file), TRUE); //this process can work XML or CSV file with similar content
+        return collect($collection)->unique('account')->values()->all();
     }
 
     /**
@@ -91,6 +96,11 @@ class StoreProcess
         return $this->checkDataDifference($results, $currentData);
     }
 
+    /**
+     * @param $jsonData
+     * @param $currentData
+     * @return array
+     */
     private function checkDataDifference($jsonData, $currentData): array
     {
         $result = [];
