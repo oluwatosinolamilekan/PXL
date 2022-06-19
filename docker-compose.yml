@@ -1,23 +1,28 @@
 version: '3'
 services:
+
     #PHP Service
     pxl_app:
         build:
             context: .
             dockerfile: Dockerfile
-        image: laravel-app
+        image: digitalocean.com/php
         container_name: pxl_app
         restart: unless-stopped
         tty: true
         environment:
             SERVICE_NAME: pxl_app
             SERVICE_TAGS: dev
+            WAIT_HOSTS_TIMEOUT: 300
+            WAIT_SLEEP_INTERVAL: 30
+            WAIT_HOST_CONNECT_TIMEOUT: 30
             DB_HOST : pxl_db
         working_dir: /var/www
         depends_on:
             - pxl_db
         volumes:
             - ./:/var/www
+            - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
         networks:
             - app-network
 
@@ -45,9 +50,9 @@ services:
             - "5306:3306"
         environment:
             MYSQL_DATABASE: pxl_db
-            DB_USERNAME: pxl
-            DB_PASSWORD: pxl.
-            MYSQL_ROOT_PASSWORD: pxl.
+            DB_USERNAME: rheedwahn
+            DB_PASSWORD: DoviLearn1.
+            MYSQL_ROOT_PASSWORD: DoviLearn1.
             MYSQL_ROOT_HOST: '%'
         volumes:
             - ./mysql/my.cnf:/etc/mysql/my.cnf
@@ -64,5 +69,4 @@ networks:
 volumes:
     dbdata:
         driver: local
-    redisdata:
-        driver: local
+

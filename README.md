@@ -61,7 +61,7 @@ Make sure everything is running: `$ docker ps`. After, enter the terminal of you
  docker-compose exec pxl_app bash
 ```
 
-Once inside, run migrations `$ php artisan migrate` and creat process that will neatly transfer the contents of the JSON file to a database by executing the following command `$ php artisan start:process` and follow its
+Once inside, run migrations `$ php artisan migrate` and create process that will neatly transfer the contents of the JSON file to a database by executing the following command `$ php artisan start:process` and follow its
 steps.
 
 Please, remember that once you have build your images you simply need to do:
