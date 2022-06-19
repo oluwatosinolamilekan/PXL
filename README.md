@@ -75,10 +75,13 @@ To remove everything:
  docker-compose down --remove-orphans --rmi all
 ```
 
-## Other commands.
+### Other commands.
 
+Store Data From file(XML,JSON,CSV) to database
+```
+php artisan store:process
+```
 Removes all existing data on all databases
-
 ```
 php artisan migrate:fresh 
 ```
