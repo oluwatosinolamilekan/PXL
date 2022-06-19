@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class CreateAccountProcess
 {
-    public object $result;
+    public array $result;
 
     public function __construct($result)
     {
