@@ -2,6 +2,7 @@
 
 namespace App\Actions;
 
+use App\Jobs\StoreProcessJob;
 use App\Models\Account;
 use Carbon\Carbon;
 use Exception;
@@ -35,9 +36,7 @@ class StoreProcess
 
         DB::beginTransaction();
         if (!empty($results)) {
-            foreach ($results as $result){
-                Account::create($result);
-            }
+            StoreProcessJob::dispatch($results);
         }
         DB::commit();
         return microtime(true) - $start;
@@ -73,6 +72,9 @@ class StoreProcess
        return collect($results)->filter(function ($value){
             return collect($value)->whereBetween('age', self::AGE)
                 || collect($value)->whereNull('date_of_birth');
+//                && collect($value['credit_card'])->contains(function ($data){
+//                    dd($data);
+//                });
         })->all();
     }
 
