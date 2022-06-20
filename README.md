@@ -56,6 +56,12 @@ While docker is doing its magic, you need to add to `hosts` file:
 ```
 127.0.0.1:8090 or localhost:8090
 ```
+The pxl_app container take a little while to finish round up, if it hasn't round up you can wait for least few minutes or else
+it will throw some error while the composer hasn't been installed fully on docker while running
+
+![alt text](public/errormigrate.png)
+
+![alt text](public/dockercompose.png)
 
 Make sure everything is running: `docker ps`. After, enter the terminal of your pxl image:
 ```
