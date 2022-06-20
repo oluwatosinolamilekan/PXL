@@ -68,6 +68,9 @@ steps.
 
 ![alt text](public/migrate.png)
 
+&nbsp;
+&nbsp;
+&nbsp;
 ![alt text](public/process.png)
 Please, remember that once you have build your images you simply need to do:
 ```
