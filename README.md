@@ -4,7 +4,7 @@
 
 ## The application should have the following:
 
-Write a process that will neatly transfers the contents of the JSON file to a database.
+Write a process that will neatly transfer the contents of the JSON file to a database.
 Preferably as a background task in Laravel. Using Docker is allowed, but only if that makes its more fun.
 We mainly pay attention to the design and structure of the code. We would prefer a solid, neat, well-maintainable solution that doesn’t work 100%, then a completed solution that is messy and inimitable. We are particularly interested in the thinking behind your approach.
 
