@@ -85,7 +85,7 @@ To remove everything:
 
 ### Other commands.
 
-Store Data From file(XML,JSON,CSV) to database
+Store data from file(XML,JSON,CSV) to database
 ```
 php artisan store:process
 ```
