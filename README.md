@@ -39,11 +39,10 @@ As an added challenge, we offer the following information:
 Below are the steps you need to successfully setup and run the application.
 - Clone the app from the repository and cd into the root directory of the app
 
-Make sure docker is installed on your machine.
-Once installed, next step is to add an `.env` file. `.env.example` already have all values, to be used with docker:
 ```
  cp .env.example .env
 ```
+Make sure docker is installed on your machine.
 
 Now, the most important, build and start the docker containers.
 ` docker-compose up -d --build --remove-orphans`
