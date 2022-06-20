@@ -1,6 +1,7 @@
 <?php
 
 use App\Actions\StoreProcess;
+use App\Models\Account;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    (new StoreProcess('challenge.json'))->run();
     return view('welcome');
 });
