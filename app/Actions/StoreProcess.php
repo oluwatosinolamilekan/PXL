@@ -72,9 +72,6 @@ class StoreProcess
        return collect($results)->filter(function ($value){
             return collect($value)->whereBetween('age', self::AGE)
                 || collect($value)->whereNull('date_of_birth');
-//                && collect($value['credit_card'])->contains(function ($data){
-//                    dd($data);
-//                });
         })->all();
     }
 

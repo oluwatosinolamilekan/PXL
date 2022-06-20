@@ -48,12 +48,14 @@ Once installed, next step is to add an `.env` file. `.env.example` already have 
 Now, the most important, build and start the docker containers.
 ` docker-compose up -d --build --remove-orphans`
 
+![alt text](public/docker.png)
+
 Docker will start doing its magic. All required service like mysql, will be installed.
 MySQL will have empty database, unless you created it in the past (data are preserved between containers rebuild).
 
 While docker is doing its magic, you need to add to `hosts` file:
 ```
-127.0.0.1:8090
+127.0.0.1:8090 or localhost:8090
 ```
 
 Make sure everything is running: `docker ps`. After, enter the terminal of your pxl image:
@@ -64,6 +66,9 @@ Make sure everything is running: `docker ps`. After, enter the terminal of your 
 Once inside, run migrations `php artisan migrate` and create process that will neatly transfer the contents of the JSON file to a database by executing the following command ` php artisan start:process` and follow its
 steps.
 
+![alt text](public/migrate.png)
+
+![alt text](public/process.png)
 Please, remember that once you have build your images you simply need to do:
 ```
  docker-compose stop # to stop the images
