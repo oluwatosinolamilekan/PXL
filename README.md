@@ -80,7 +80,7 @@ Please, remember that once you have build your images you simply need to do:
 
 To remove everything:
 ```
- docker-compose down --remove-orphans --rmi all
+ docker-compose down --remove-orphans
 ```
 
 ### Other commands.
