@@ -58,7 +58,8 @@ RUN cp /var/www/.env.example /var/www/.env
 RUN /usr/local/bin/composer install --no-ansi --optimize-autoloader --no-plugins --no-interaction \
     && php artisan config:clear \
     && php artisan cache:clear \
-    && php artisan route:clear
+    && php artisan route:clear \
+    && php artisan optimize
 
 # Change current user to www
 USER www
